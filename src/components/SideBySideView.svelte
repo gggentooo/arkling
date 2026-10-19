@@ -123,14 +123,14 @@
     width: 100%;
   }
 
-  @media (max-width: 860px) {
+  @media (max-width: 768px) {
     .columns-header {
       grid-template-columns: 1fr;
       gap: 0.75rem;
     }
 
     .line-row {
-      grid-template-columns: 1fr;
+        flex-direction: column;
       gap: 0.5rem;
       padding-bottom: 1rem;
       border-bottom: 1px dashed var(--border-subtle);

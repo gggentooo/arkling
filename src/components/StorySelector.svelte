@@ -162,6 +162,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    margin-top: 1.25rem;
   }
 
   .selector-header {
@@ -330,14 +331,7 @@
     }
   }
 
-  @media (max-width: 900px) {
-    .dropdowns-grid {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-  }
-
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .story-selector-card {
       padding: 1rem;
     }

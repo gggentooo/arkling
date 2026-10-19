@@ -34,6 +34,18 @@ function handleSystemLanguageChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     learningState.setJapaneseAnnotationMode(select.value as JapaneseAnnotationMode);
   }
+
+  function sectionOpenClose(button) {
+  const parent = button.parentElement;
+  const isFolded = button.textContent === 'Close Menu';
+  button.textContent = isFolded ? 'Open Menu' : 'Close Menu';
+  
+  Array.from(parent.children).forEach(child => {
+    if (child !== button) {
+      child.classList.toggle('hide');
+    }
+  });
+}
 </script>
 
 <header class="top-bar">
@@ -48,6 +60,7 @@ function handleSystemLanguageChange(event: Event) {
 
     <!-- Controls Container -->
     <div class="controls-group">
+    <button class="hide" id="button_menu_toggle" onclick={() => (0, eval)('sectionOpenClose(this)')}>Close Menu</button>
       <!-- 1. Target Language Dropdown -->
       <div class="control-item">
         <label for="target-language-select" class="control-label">
@@ -209,7 +222,9 @@ function handleSystemLanguageChange(event: Event) {
 
   .arkling-info {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    gap: 1.5rem;
   }
 
   .arkling-title {
@@ -217,7 +232,6 @@ function handleSystemLanguageChange(event: Event) {
     font-weight: 700;
     letter-spacing: -0.02em;
     color: var(--text-main);
-    line-height: 1.2;
   }
 
   .arkling-subtitle {
@@ -311,7 +325,7 @@ function handleSystemLanguageChange(event: Event) {
     background-color: var(--bg-surface-subtle);
     border: 1px solid var(--border-subtle);
     transition: all var(--transition-fast);
-    height: 2.5rem;
+    height: 1.5rem;
   }
 
   .checkbox-container:hover {
@@ -375,13 +389,17 @@ function handleSystemLanguageChange(event: Event) {
       transform: rotate(360deg);
     }
   }
+    #button_menu_toggle {display: none;}
 
   @media (max-width: 768px) {
+.hide {display: none;}
+    #button_menu_toggle {display: flex;}
+
     .top-bar-inner {
       padding: 0.75rem 1rem;
       flex-direction: column;
       align-items: stretch;
-      gap: 1rem;
+      gap: none;
     }
 
     .controls-group {

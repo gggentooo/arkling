@@ -8,7 +8,7 @@
 :root {
   /* Layout Dimensions */
   --topbar-height: 64px;
-  --max-content-width: 1400px;
+  --max-content-width: 1200px;
   --border-radius-sm: 4px;
   --border-radius-md: 6px;
   --border-radius-lg: 10px;
@@ -46,6 +46,7 @@
 
 html, body {
   font-family: var(--font-sans);
+  background: var(--main-background-color);
 }
 
 /* Global Form Controls & Buttons */

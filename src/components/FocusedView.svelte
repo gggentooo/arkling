@@ -103,7 +103,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    max-width: 900px;
+    max-width: --max-content-width;
     margin: 0 auto;
     width: 100%;
   }
@@ -293,7 +293,7 @@
     flex-direction: column;
   }
 
-  @media (max-width: 640px) {
+  @media (max-width: 768px) {
     .focused-header {
       flex-direction: column;
       align-items: stretch;

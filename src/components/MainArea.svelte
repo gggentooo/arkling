@@ -40,7 +40,6 @@
 <style>
   .main-area {
     flex: 1;
-    padding: 1.5rem 1.5rem 4rem;
     background-color: var(--bg-app);
   }
 
@@ -50,40 +49,6 @@
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-  }
-
-  .script-header {
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--border-radius-lg);
-    padding: 1.5rem 1.75rem;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .script-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .script-title {
-    font-size: 1.45rem;
-    font-weight: 700;
-    color: var(--text-main);
-    letter-spacing: -0.02em;
-    line-height: 1.3;
-  }
-
-  .script-description {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    max-width: 800px;
-    line-height: 1.5;
-  }
-
-  .tag-highlight {
-    font-weight: 600;
-    color: var(--arkling-target);
   }
 
   .script-content {
