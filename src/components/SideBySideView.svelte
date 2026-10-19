@@ -46,65 +46,6 @@
     gap: 1rem;
   }
 
-  .column-title-box {
-    padding: 1rem 1.25rem;
-    border-radius: var(--border-radius-md);
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-subtle);
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .target-title-box {
-    border-top: 3px solid var(--arkling-target);
-  }
-
-  .system-title-box {
-    border-top: 3px solid var(--arkling-system);
-  }
-
-  .title-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .badge {
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.2rem 0.5rem;
-    border-radius: var(--border-radius-sm);
-  }
-
-  .badge-target {
-    background-color: var(--arkling-target-bg);
-    color: var(--arkling-target);
-  }
-
-  .badge-system {
-    background-color: var(--arkling-system-bg);
-    color: var(--arkling-system);
-  }
-
-  .column-heading {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text-main);
-    display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
-  }
-
-  .native-name {
-    font-size: 0.85rem;
-    font-weight: normal;
-    color: var(--text-muted);
-  }
-
   .lines-grid {
     display: flex;
     flex-direction: column;
@@ -124,21 +65,11 @@
   }
 
   @media (max-width: 768px) {
-    .columns-header {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-
     .line-row {
         flex-direction: column;
       gap: 0.5rem;
       padding-bottom: 1rem;
       border-bottom: 1px dashed var(--border-subtle);
-    }
-
-    .row-index {
-      justify-content: flex-start;
-      padding-left: 0.25rem;
     }
   }
 </style>

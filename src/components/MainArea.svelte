@@ -89,13 +89,5 @@
     .main-area {
       padding: 1rem 0.75rem 3rem;
     }
-
-    .script-header {
-      padding: 1.25rem 1rem;
-    }
-
-    .script-title {
-      font-size: 1.25rem;
-    }
   }
 </style>

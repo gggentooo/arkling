@@ -1,14 +1,14 @@
 <script lang="ts">
-  import { LANGUAGES } from '../lib/constants';
-  import { learningState } from '../lib/state/learningState.svelte';
-  import LineItem from './LineItem.svelte';
+  import { LANGUAGES } from "../lib/constants";
+  import { learningState } from "../lib/state/learningState.svelte";
+  import LineItem from "./LineItem.svelte";
 
   const targetLangInfo = $derived(
-    LANGUAGES.find((l) => l.code === learningState.targetLanguage)
+    LANGUAGES.find((l) => l.code === learningState.targetLanguage),
   );
 
   const systemLangInfo = $derived(
-    LANGUAGES.find((l) => l.code === learningState.systemLanguage)
+    LANGUAGES.find((l) => l.code === learningState.systemLanguage),
   );
 </script>
 
@@ -24,7 +24,8 @@
         </h2>
       </div>
       <p class="view-instruction">
-        Lines are displayed in the target language. Click any line to toggle its {systemLangInfo?.label} translation.
+        Lines are displayed in the target language. Click any line to toggle its {systemLangInfo?.label}
+        translation.
       </p>
     </div>
 
@@ -34,14 +35,14 @@
         onclick={() => learningState.revealAllLines()}
         type="button"
         title="Reveal translations for all lines"
-      >Reveal All
+        >Reveal All
       </button>
       <button
         class="action-btn"
         onclick={() => learningState.hideAllLines()}
         type="button"
         title="Hide all translations"
-      >Hide All
+        >Hide All
       </button>
     </div>
   </div>
@@ -56,7 +57,7 @@
           <div class="line-index-col">
             <span class="index-num">{index + 1}</span>
             <span class="toggle-indicator" aria-hidden="true">
-              {isRevealed ? '▼' : '▶'}
+              {isRevealed ? "▼" : "▶"}
             </span>
           </div>
 
@@ -69,7 +70,7 @@
               {isRevealed}
               onclick={() => learningState.toggleLineReveal(line.id)}
             />
-            
+
             <div class="toggle-prompt">
               {isRevealed
                 ? `Click to hide ${systemLangInfo?.label} translation`
@@ -165,10 +166,6 @@
   .view-instruction {
     font-size: 0.85rem;
     color: var(--text-muted);
-  }
-
-  .highlight-hint {
-    color: var(--arkling-primary);
   }
 
   .quick-actions {

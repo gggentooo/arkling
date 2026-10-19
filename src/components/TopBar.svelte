@@ -54,7 +54,7 @@ function handleSystemLanguageChange(event: Event) {
     <div class="arkling">
       <div class="arkling-info">
         <h1 class="arkling-title">ArkLing</h1>
-        <a href="https://lnaba.reisen" class="arkling-subtitle">Source (GitHub)</a>
+        <a href="https://github.com/gggentooo/arkling" class="arkling-subtitle">Source (GitHub)</a>
       </div>
     </div>
 
