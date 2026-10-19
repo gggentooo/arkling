@@ -199,7 +199,6 @@ function handleSystemLanguageChange(event: Event) {
     z-index: 50;
     background-color: var(--bg-surface);
     border-bottom: 1px solid var(--border-subtle);
-    box-shadow: var(--shadow-sm);
   }
 
   .top-bar-inner {

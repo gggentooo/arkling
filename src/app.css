@@ -42,10 +42,6 @@
   --transition-normal: 250ms ease;
 }
 
-html {
-    margin: -8px;
-}
-
 html, body {
   font-family: var(--font-sans);
   background: var(--main-background-color);
