@@ -6,14 +6,9 @@ import type { JapaneseAnnotationMode, LanguageCode, ScriptLine } from '../../typ
 let kuroshiroInstance: Kuroshiro | null = null;
 let kuroshiroInitPromise: Promise<Kuroshiro> | null = null;
 
-// In-memory caches for fast instantaneous re-renders
 const pinyinCache = new Map<string, string>();
 const japaneseCache = new Map<string, string>();
 
-/**
- * Initializes Kuroshiro analyzer with dictPath.
- * First tries the local /dict/ path, and falls back to unpkg/jsdelivr CDN if needed.
- */
 export async function getKuroshiro(): Promise<Kuroshiro> {
   if (kuroshiroInstance) {
     return kuroshiroInstance;
@@ -31,7 +26,6 @@ export async function getKuroshiro(): Promise<Kuroshiro> {
 
     const kuroshiro = new KuroshiroCtor();
 
-    // In browser/Vite with relative base './', build dictPath relative to current page
     const base = import.meta.env.BASE_URL || './';
     const localDictPath = base.endsWith('/') ? `${base}dict/` : `${base}/dict/`;
 
@@ -56,9 +50,6 @@ export async function getKuroshiro(): Promise<Kuroshiro> {
   return await kuroshiroInitPromise;
 }
 
-/**
- * Annotates Mandarin Chinese text with Pinyin ruby tags.
- */
 export function annotateMandarin(text: string): string {
   if (!text) return '';
   if (pinyinCache.has(text)) {
@@ -70,9 +61,6 @@ export function annotateMandarin(text: string): string {
   return annotated;
 }
 
-/**
- * Annotates Japanese text with Furigana (ruby tags) or Romaji.
- */
 export async function annotateJapanese(
   text: string,
   mode: JapaneseAnnotationMode
@@ -106,9 +94,6 @@ export async function annotateJapanese(
   return result;
 }
 
-/**
- * Applies annotations to an array of ScriptLines based on target language and user settings.
- */
 export async function annotateScriptLines(
   lines: ScriptLine[],
   targetLanguage: LanguageCode,
@@ -117,7 +102,6 @@ export async function annotateScriptLines(
 ): Promise<ScriptLine[]> {
   if (lines.length === 0) return lines;
 
-  // 1. Mandarin with Pinyin enabled
   if (targetLanguage === 'zh' && displayPinyin) {
     return lines.map((line) => {
       const raw = line.text.zh;
@@ -134,9 +118,7 @@ export async function annotateScriptLines(
     });
   }
 
-  // 2. Japanese with Furigana or Romaji enabled
   if (targetLanguage === 'ja' && japaneseAnnotationMode !== 'none') {
-    // Process lines in parallel batches for responsive UI
     const annotatedTexts = await Promise.all(
       lines.map((line) => {
         const raw = line.text.ja;

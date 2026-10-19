@@ -25,7 +25,6 @@ export interface ScriptDocument {
   lines: ScriptLine[];
 }
 
-// Story hierarchy types for Arknights data submodule
 export type StoryCategory = 'main' | 'side' | 'mini' | 'record';
 
 export interface StoryCategoryOption {

@@ -6,12 +6,6 @@ export interface ParsedDialogueLine {
   isDecision?: boolean;
 }
 
-/**
- * Sanitizes in-game Arknights text formatting:
- * - Replaces {@nickname} with Doctor
- * - Strips <color=...> tags and custom bbcode-like tags
- * - Cleans up escaped newlines and extra spaces
- */
 export function sanitizeDialogueText(raw: string): string {
   if (!raw) return '';
 

@@ -1,5 +1,5 @@
 # ArkLing
-Tool for learning either Mandarin/English/Japanese/Korean in either Mandarin/English/Japanese/Korean, with help from the extremely educational and totally-appropriate-for-language-learning-resource, the Arknights game script
+Tool for learning Mandarin/English/Japanese/Korean in either Mandarin/English/Japanese/Korean, with help from the extremely educational and totally-appropriate-for-language-learning resource, the Arknights game script
 
 Vibeslopped (with love) by @gggentooo
 (Overly grotesquely sloppy parts are manually edited by myself)

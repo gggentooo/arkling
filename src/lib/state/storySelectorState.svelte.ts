@@ -11,13 +11,12 @@ import { parseArknightsScript, alignScripts } from '../parser/scriptParser';
 import { learningState } from './learningState.svelte';
 
 export const STORY_CATEGORIES: StoryCategoryOption[] = [
-  { value: 'main', label: 'Main Story', description: 'Core storyline chapters' },
-  { value: 'side', label: 'Side Story', description: 'Major event narratives' },
-  { value: 'mini', label: 'Vignette', description: 'Short story collections' },
-  { value: 'record', label: 'Operator Record', description: 'Individual character stories' }
+  { value: 'main', label: 'Main Story', description: 'Main Story' },
+  { value: 'side', label: 'Side Story', description: 'Side Story' },
+  { value: 'mini', label: 'Vignette', description: 'Vignette' },
+  { value: 'record', label: 'Operator Record', description: 'Operator Record' }
 ];
 
-// Fallback initial chapter (Prologue) for instant rendering before table fetch completes
 const INITIAL_PROLOGUE_EPISODES: StoryEpisode[] = [
   {
     storyId: 'main_0_0_welcome_to_guide',
@@ -66,7 +65,6 @@ class StorySelectorStateManager {
   selectedChapterId = $state<string>('main_0');
   selectedEpisodeId = $state<string>('main_0_0_welcome_to_guide');
 
-  // Organized chapters by category
   chaptersByCategory = $state<Record<StoryCategory, StoryChapter[]>>({
     main: [
       {
@@ -145,7 +143,6 @@ class StorySelectorStateManager {
         continue;
       }
 
-      // Map episodes and format display names
       const episodes: StoryEpisode[] = rawEntry.infoUnlockDatas
         .filter((d) => Boolean(d.storyTxt))
         .map((d, index) => {
@@ -172,7 +169,6 @@ class StorySelectorStateManager {
           };
         });
 
-      // Sort episodes by storySort
       episodes.sort((a, b) => a.storySort - b.storySort);
 
       if (key.startsWith('main_')) {
@@ -208,7 +204,6 @@ class StorySelectorStateManager {
       }
     }
 
-    // Sort main chapters numerically: main_0, main_1, main_2, etc.
     mainChapters.sort((a, b) => {
       const numA = parseInt(a.id.split('_')[1] || '0', 10);
       const numB = parseInt(b.id.split('_')[1] || '0', 10);
@@ -222,7 +217,6 @@ class StorySelectorStateManager {
       record: recordChapters
     };
 
-    // Ensure selected chapter and episode exist in new list
     const currentCatChapters = this.chaptersByCategory[this.selectedCategory] || [];
     if (!currentCatChapters.some((c) => c.id === this.selectedChapterId)) {
       this.selectedChapterId = currentCatChapters[0]?.id || 'main_0';
@@ -292,7 +286,6 @@ class StorySelectorStateManager {
     this.statusMessage = `Fetching script: ${episode.displayName}...`;
 
     try {
-      // 1. Fetch Target Language script
       let targetRaw = '';
       try {
         targetRaw = await fetchStoryScriptRaw(targetLang, episode.storyTxt);
@@ -305,7 +298,6 @@ class StorySelectorStateManager {
         throw err;
       }
 
-      // 2. Fetch System Language script (with graceful fallback if not available)
       let systemRaw = '';
       try {
         systemRaw = await fetchStoryScriptRaw(systemLang, episode.storyTxt);
@@ -318,17 +310,14 @@ class StorySelectorStateManager {
         }
       }
 
-      // 3. Parse and align dialogue lines
       const targetParsed = parseArknightsScript(targetRaw);
       const systemParsed = systemRaw ? parseArknightsScript(systemRaw) : [];
 
       const alignedLines = alignScripts(targetParsed, systemParsed, targetLang, systemLang);
 
-      // 4. Update the global learningState
       learningState.lines = alignedLines;
       learningState.hideAllLines(); // reset revealed lines for focused mode
 
-      // 5. Automatically apply annotations if active (Pinyin or Furigana/Romaji)
       await learningState.applyAnnotations();
 
       this.statusMessage = null;

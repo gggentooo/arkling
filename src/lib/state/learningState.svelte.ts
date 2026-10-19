@@ -1,4 +1,3 @@
-import { SAMPLE_LINES } from '../constants';
 import type { JapaneseAnnotationMode, LanguageCode, LearningMode, ScriptLine } from '../../types';
 import { annotateScriptLines } from '../annotations';
 
@@ -7,19 +6,13 @@ class LearningStateManager {
   systemLanguage = $state<LanguageCode>('en');
   learningMode = $state<LearningMode>('side-by-side');
 
-  // Annotation options
   displayPinyin = $state<boolean>(false);
   japaneseAnnotationMode = $state<JapaneseAnnotationMode>('none');
   isAnnotating = $state<boolean>(false);
 
-  // Set of revealed line IDs for 'focused' mode
   revealedLineIds = $state<Set<string>>(new Set());
 
-  // Script lines
-  lines = $state<ScriptLine[]>(SAMPLE_LINES);
-
   constructor() {
-    // Ensure initial state invariants
     if (this.targetLanguage === this.systemLanguage) {
       this.systemLanguage = this.findAlternativeLanguage(this.targetLanguage);
     }
@@ -29,12 +22,10 @@ class LearningStateManager {
     if (this.targetLanguage === lang) return;
     this.targetLanguage = lang;
 
-    // Invariant: System language cannot be the same as target language
     if (this.systemLanguage === lang) {
       this.systemLanguage = this.findAlternativeLanguage(lang);
     }
 
-    // Automatically apply annotations if the newly selected target language has them enabled
     this.applyAnnotations();
   }
 
@@ -60,7 +51,6 @@ class LearningStateManager {
   }
 
   async applyAnnotations() {
-    // Check if any annotation is needed for current target language
     const needsMandarin = this.targetLanguage === 'zh' && this.displayPinyin;
     const needsJapanese = this.targetLanguage === 'ja' && this.japaneseAnnotationMode !== 'none';
 
