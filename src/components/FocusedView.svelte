@@ -71,11 +71,11 @@
               onclick={() => learningState.toggleLineReveal(line.id)}
             />
 
-            <div class="toggle-prompt">
+            <!-- <div class="toggle-prompt">
               {isRevealed
                 ? `Click to hide ${systemLangInfo?.label} translation`
                 : `Click to reveal ${systemLangInfo?.label} translation`}
-            </div>
+            </div> -->
           </div>
         </div>
 

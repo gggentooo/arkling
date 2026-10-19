@@ -14,6 +14,10 @@
           ? 'Vignette'
           : 'Operator Record'
   );
+
+    function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 </script>
 
 <main class="main-area">
@@ -26,7 +30,7 @@
       {#if learningState.lines.length === 0 && storySelectorState.isLoadingScript}
         <div class="empty-state">
           <span class="empty-spinner"></span>
-          <p>Retrieving and aligning multilingual scripts from GitHub...</p>
+          <p>Retrieving scripts...</p>
         </div>
       {:else if learningState.learningMode === 'side-by-side'}
         <SideBySideView />
@@ -34,6 +38,13 @@
         <FocusedView />
       {/if}
     </section>
+     <StorySelector />
+<button type="button" class="scroll-to-top" onclick={scrollToTop} aria-label="Jump to top">
+    ▲
+  </button>
+
+  <div class="padding"></div>
+     
   </div>
 </main>
 
@@ -77,6 +88,10 @@
     border-top-color: var(--arkling-primary);
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
+  }
+
+  .padding {
+    padding: 40px 0;
   }
 
   @keyframes spin {

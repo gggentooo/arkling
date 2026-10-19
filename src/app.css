@@ -95,6 +95,20 @@ rt {
   line-height: 1;
 }
 
+.scroll-to-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--main-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

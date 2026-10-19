@@ -355,6 +355,7 @@
 
     select {
         max-width: 100%;
+        font-size: 0.75em;
     }
   }
 </style>
