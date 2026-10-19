@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Arkling Theme & Variables
+   ========================================================================== */
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Noto+Sans+KR:wght@100..900&family=Noto+Sans+SC:wght@100..900&display=swap');
+
+:root {
+  /* Layout Dimensions */
+  --topbar-height: 64px;
+  --max-content-width: 1400px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 6px;
+  --border-radius-lg: 10px;
+
+  /* Typography */
+  --font-sans: 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+
+  /* Color Palette - Light Theme */
+  --main-background-color: #eee;
+  --main-text-color: #333;
+  --sub-background-color: #333d;
+  --sub-background-color-mild: #3333;
+  --sub-text-color: #777;
+  --inverted-background-color: var(--main-text-color);
+  --inverted-text-color: var(--main-background-color);
+  --accent-color: #247bff;
+
+  --bg-app: var(--main-background-color);
+  --bg-surface: var(--main-background-color);
+  --border-subtle: var(--sub-background-color);
+  --border-strong: var(--sub-text-color);
+  --border-focus: var(--accent-color);
+
+  --text-main: var(--main-text-color);
+  --text-muted: var(--sub-text-color);
+  --text-subtle: var(--sub-text-color);
+
+  --arkling-primary: var(--accent-color);
+  --arkling-target: #247bff;
+  --arkling-system: #f57710;
+
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+}
+
+/* Dark mode auto-adaptation */
+html.dark, 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --main-background-color: #333;
+    --main-text-color: #eee;
+    --sub-background-color: #eeed;
+    --sub-background-color-mild: #eee3;
+    --sub-text-color: #ccc;
+    --accent-color: #f57710;
+
+    --bg-app: var(--main-background-color);
+    --border-subtle: var(--sub-background-color);
+    --border-strong: var(--sub-text-color);
+    --border-focus: var(--accent-color);
+
+    --text-main: var(--main-text-color);
+    --text-muted: var(--sub-text-color);
+    --text-subtle: var(--sub-text-color);
+
+    --arkling-primary: var(--accent-color);
+    --arkling-target: #247bff;
+    --arkling-system: #f57710;
+  }
+}
+
+/* Reset & Base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  background-color: var(--main-background-color);
+  color: var(--main-text-color);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Global Form Controls & Buttons */
+select, input {
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--main-text-color);
+  background: var(--main-background-color);
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  border: 1.5px solid var(--sub-text-color);
+}
+
+button {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.9em;
+  color: var(--main-text-color);
+  background: var(--main-background-color);
+  padding: 4px 8px;
+  border-radius: var(--border-radius-sm);
+  border: 1.5px solid var(--main-text-color);
+  cursor: pointer;
+  width: fit-content;
+}
+
+button:hover {
+  color: var(--inverted-text-color);
+  background: var(--inverted-background-color);
+}
+
+*:focus {
+  outline: 2px solid var(--main-background-color);
+  box-shadow: 0 0 2px 4px var(--accent-color);
+}
+
+/* Ruby Text (Pinyin / Yomigana annotations) */
+ruby {
+  ruby-align: center;
+  ruby-position: over;
+}
+
+rt {
+  font-size: 0.55em;
+  color: var(--accent-color);
+  font-weight: 500;
+  user-select: none;
+  line-height: 1;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--sub-text-color);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--main-text-color);
+}
