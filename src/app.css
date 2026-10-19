@@ -44,56 +44,6 @@
   --transition-normal: 250ms ease;
 }
 
-/* Dark mode auto-adaptation */
-html.dark, 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --main-background-color: #333;
-    --main-text-color: #eee;
-    --sub-background-color: #eeed;
-    --sub-background-color-mild: #eee3;
-    --sub-text-color: #ccc;
-    --accent-color: #f57710;
-
-    --bg-app: var(--main-background-color);
-    --border-subtle: var(--sub-background-color);
-    --border-strong: var(--sub-text-color);
-    --border-focus: var(--accent-color);
-
-    --text-main: var(--main-text-color);
-    --text-muted: var(--sub-text-color);
-    --text-subtle: var(--sub-text-color);
-
-    --arkling-primary: var(--accent-color);
-    --arkling-target: #247bff;
-    --arkling-system: #f57710;
-  }
-}
-
-/* Reset & Base */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html, body {
-  height: 100%;
-  font-family: var(--font-sans);
-  font-size: 16px;
-  background-color: var(--main-background-color);
-  color: var(--main-text-color);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-#app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Global Form Controls & Buttons */
 select, input {
   font-family: inherit;
