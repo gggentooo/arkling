@@ -21,6 +21,7 @@ Vibeslopped (with love) by @gggentooo
 ### to-do list for myself
 - Clean up the cssslop & commentslop
 - Translate menu text into all 4 system languages (currently only English is implemented)
+- Set max-width for select in storyselect to limit width overflow
 
 ---
 ## External libraries used

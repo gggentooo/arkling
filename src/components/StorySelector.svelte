@@ -229,8 +229,8 @@
   }
 
   .dropdowns-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.3fr 1.7fr;
+    display: flex;
+    flex-direction: row;
     gap: 1.25rem;
   }
 
@@ -332,6 +332,10 @@
   }
 
   @media (max-width: 768px) {
+  .dropdowns-grid {
+    flex-direction: column;
+    gap: 1rem;
+  }
     .story-selector-card {
       padding: 1rem;
       max-width: 100%;
