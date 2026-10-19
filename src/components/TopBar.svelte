@@ -60,7 +60,7 @@ function handleSystemLanguageChange(event: Event) {
 
     <!-- Controls Container -->
     <div class="controls-group">
-    <button class="hide" id="button_menu_toggle" onclick={() => (0, eval)('sectionOpenClose(this)')}>Close Menu</button>
+<button class="hide" id="button_menu_toggle" onclick={(e) => sectionOpenClose(e.currentTarget)}>Close Menu</button>
       <!-- 1. Target Language Dropdown -->
       <div class="control-item">
         <label for="target-language-select" class="control-label">
