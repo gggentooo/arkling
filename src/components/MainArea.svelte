@@ -87,7 +87,9 @@
 
   @media (max-width: 768px) {
     .main-area {
-      padding: 1rem 0.75rem 3rem;
+      padding: 1rem auto 3rem;
+      width: 100%;
+      max-width: 100%;
     }
   }
 </style>

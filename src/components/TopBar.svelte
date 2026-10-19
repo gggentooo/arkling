@@ -398,12 +398,13 @@ function handleSystemLanguageChange(event: Event) {
       padding: 0.75rem 1rem;
       flex-direction: column;
       align-items: stretch;
-      gap: none;
+      gap: 0;
     }
 
     .controls-group {
       display: grid;
       grid-template-columns: 1fr;
+      gap: 1rem;
       width: 100%;
     }
 
