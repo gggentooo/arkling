@@ -43,7 +43,7 @@
     ▲
   </button>
 
-  <div class="padding"></div>
+  <p class="footer">© gggentooo 2026; https://github.com/gggentooo/arkling</p>
      
   </div>
 </main>
@@ -90,8 +90,12 @@
     animation: spin 0.8s linear infinite;
   }
 
-  .padding {
+  .footer {
     padding: 40px 0;
+    width: 100%;
+    text-align: center;
+    font-size: 0.5em;
+    color: var(--text-muted);
   }
 
   @keyframes spin {
