@@ -1,3 +1,4 @@
+import { SAMPLE_LINES } from '../constants';
 import type { JapaneseAnnotationMode, LanguageCode, LearningMode, ScriptLine } from '../../types';
 import { annotateScriptLines } from '../annotations';
 
@@ -11,6 +12,8 @@ class LearningStateManager {
   isAnnotating = $state<boolean>(false);
 
   revealedLineIds = $state<Set<string>>(new Set());
+
+  lines = $state<ScriptLine[]>(SAMPLE_LINES);
 
   constructor() {
     if (this.targetLanguage === this.systemLanguage) {
