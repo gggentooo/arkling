@@ -336,6 +336,11 @@
     flex-direction: column;
     gap: 1rem;
   }
+  
+  .header-left {
+    height: 2rem;
+  }
+
     .story-selector-card {
       padding: 1rem;
       max-width: 100%;
@@ -346,6 +351,10 @@
     }
     .nav-button-group {
       justify-content: space-between;
+    }
+
+    select {
+        max-width: 100%;
     }
   }
 </style>
