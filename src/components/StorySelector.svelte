@@ -334,6 +334,7 @@
   @media (max-width: 768px) {
     .story-selector-card {
       padding: 1rem;
+      max-width: 100%;
     }
     .selector-header {
       flex-direction: column;
