@@ -17,6 +17,7 @@
   <div class="lines-grid">
     {#each learningState.lines as line, index (line.id)}
       <div class="line-row">
+            <div class="index-num-container"><span class="index-num">{index + 1}</span></div>
         <!-- Left: Target Language Area -->
         <div class="pane pane-target">
           <LineItem
@@ -40,6 +41,18 @@
 </div>
 
 <style>
+  .index-num-container {
+    display: flex;
+    font-size: 0.75rem;
+    min-width: 1rem;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem 0.5rem;
+    border-radius: var(--border-radius-md);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+  }
+
   .side-by-side-container {
     display: flex;
     flex-direction: column;
@@ -55,7 +68,7 @@
   .line-row {
     display: flex;
     gap: 1rem;
-    align-items: stretch;
+    align-items: center;
   }
 
   .pane {

@@ -60,13 +60,13 @@ select, input {
 
 button {
   font-family: var(--font-sans);
-  font-weight: 500;
+  font-weight: 400;
   font-size: 0.9em;
   color: var(--main-text-color);
   background: var(--main-background-color);
   padding: 4px 8px;
   border-radius: var(--border-radius-sm);
-  border: 1.5px solid var(--main-text-color);
+  border: 1px solid var(--main-text-color);
   cursor: pointer;
   width: fit-content;
 }

@@ -14,7 +14,7 @@
 
 <div class="focused-container">
   <!-- Focused Header & Toolbar -->
-  <div class="focused-header">
+  <!-- <div class="focused-header">
     <div class="header-left">
       <div class="title-meta">
         <span class="badge badge-target">Focused Mode</span>
@@ -45,7 +45,7 @@
         >Hide All
       </button>
     </div>
-  </div>
+  </div> -->
 
   <!-- Focused Lines List -->
   <div class="focused-lines-list">

@@ -4,6 +4,8 @@
   import { learningState } from '../lib/state/learningState.svelte';
   import type { StoryCategory } from '../types';
 
+  let skipLineInput = $state(1);
+
   onMount(() => {
     // Initial fetch of review table and default prologue script
     storySelectorState.init(learningState.systemLanguage, learningState.targetLanguage);
@@ -34,6 +36,16 @@
       learningState.targetLanguage,
       learningState.systemLanguage
     );
+  }
+
+    function handleSkipToLine() {
+    const lineNum = parseInt(String(skipLineInput), 10);
+    if (isNaN(lineNum)) return;
+    const rows = document.querySelectorAll('.line-row');
+    const targetRow = rows[lineNum - 1];
+    if (targetRow) {
+      targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   }
 </script>
 
@@ -133,6 +145,22 @@
         </select>
         <span class="dropdown-chevron" aria-hidden="true">▾</span>
       </div>
+    </div>
+  </div>
+
+    <!-- Skip to Line Field -->
+  <div class="skip-to-line-container" style="margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem;">
+    <label for="skip-line-input" class="selector-label">Skip to line:</label>
+    <div style="display: flex; gap: 0.5rem; align-items: center;">
+      <input
+        type="number"
+        id="skip-line-input"
+        min="1"
+        max={learningState.lines.length || 1}
+        bind:value={skipLineInput}
+        style="width: 80px;"
+      />
+      <button type="button" onclick={handleSkipToLine}>Skip</button>
     </div>
   </div>
 
