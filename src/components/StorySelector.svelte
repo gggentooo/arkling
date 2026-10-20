@@ -41,7 +41,7 @@
     function handleSkipToLine() {
     const lineNum = parseInt(String(skipLineInput), 10);
     if (isNaN(lineNum)) return;
-    const rows = document.querySelectorAll('.line-row');
+    const rows = document.querySelectorAll('.index-num');
     const targetRow = rows[lineNum - 1];
     if (targetRow) {
       targetRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
