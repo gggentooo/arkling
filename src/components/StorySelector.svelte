@@ -2,12 +2,16 @@
   import { onMount } from 'svelte';
   import { STORY_CATEGORIES, storySelectorState } from '../lib/state/storySelectorState.svelte';
   import { learningState } from '../lib/state/learningState.svelte';
+  import { UI_TRANSLATIONS } from '../lib/constants';
   import type { StoryCategory } from '../types';
 
   let skipLineInput = $state(1);
 
+  const t = $derived(
+    UI_TRANSLATIONS[learningState.systemLanguage] || UI_TRANSLATIONS['en']
+  );
+
   onMount(() => {
-    // Initial fetch of review table and default prologue script
     storySelectorState.init(learningState.systemLanguage, learningState.targetLanguage);
   });
 
@@ -38,7 +42,7 @@
     );
   }
 
-    function handleSkipToLine() {
+  function handleSkipToLine() {
     const lineNum = parseInt(String(skipLineInput), 10);
     if (isNaN(lineNum)) return;
     const rows = document.querySelectorAll('.index-num');
@@ -52,7 +56,7 @@
 <section class="story-selector-card" aria-label="Story Selector">
   <div class="selector-header">
     <div class="header-left">
-      <h3 class="selector-title">Select Episode:</h3>
+      <h3 class="selector-title">{t.selectEpisode}</h3>
     </div>
 
     <!-- Quick Navigation Prev / Next Buttons -->
@@ -68,7 +72,7 @@
           )}
         title="Previous Episode"
       >
-        <span class="arrow-icon">◀</span> Prev
+        <span class="arrow-icon">◀</span> {t.prev}
       </button>
 
       <span class="episode-counter">
@@ -86,7 +90,7 @@
           )}
         title="Next Episode"
       >
-        Next <span class="arrow-icon">▶</span>
+        {t.next} <span class="arrow-icon">▶</span>
       </button>
     </div>
   </div>
@@ -95,7 +99,7 @@
   <div class="dropdowns-grid">
     <!-- 1. Category Dropdown -->
     <div class="selector-item">
-      <label for="category-select" class="selector-label">Category</label>
+      <label for="category-select" class="selector-label">{t.category}</label>
       <div class="select-wrapper">
         <select
           id="category-select"
@@ -113,7 +117,7 @@
 
     <!-- 2. Chapter Dropdown -->
     <div class="selector-item">
-      <label for="chapter-select" class="selector-label">Chapter</label>
+      <label for="chapter-select" class="selector-label">{t.chapter}</label>
       <div class="select-wrapper">
         <select
           id="chapter-select"
@@ -131,7 +135,7 @@
 
     <!-- 3. Episode Dropdown -->
     <div class="selector-item">
-      <label for="episode-select" class="selector-label">Episode</label>
+      <label for="episode-select" class="selector-label">{t.episode}</label>
       <div class="select-wrapper">
         <select
           id="episode-select"
@@ -148,9 +152,9 @@
     </div>
   </div>
 
-    <!-- Skip to Line Field -->
+  <!-- Skip to Line Field -->
   <div class="skip-to-line-container" style="margin-top: 1rem; display: flex; align-items: center; gap: 0.75rem;">
-    <label for="skip-line-input" class="selector-label">Skip to line:</label>
+    <label for="skip-line-input" class="selector-label">{t.skipToLine}</label>
     <div style="display: flex; gap: 0.5rem; align-items: center;">
       <input
         type="number"
@@ -160,7 +164,7 @@
         bind:value={skipLineInput}
         style="width: 80px;"
       />
-      <button type="button" onclick={handleSkipToLine}>Skip</button>
+      <button type="button" onclick={handleSkipToLine}>{t.skip}</button>
     </div>
   </div>
 
@@ -179,6 +183,7 @@
     </div>
   {/if}
 </section>
+
 
 <style>
   .story-selector-card {

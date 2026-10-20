@@ -20,6 +20,99 @@ export const LEARNING_MODES: { value: LearningMode; label: string; description: 
   }
 ];
 
+export const UI_TRANSLATIONS: Record<LanguageCode, Record<string, string>> = {
+  en: {
+    targetLanguage: 'Target Language',
+    systemLanguage: 'System Language',
+    learningMode: 'Learning Mode',
+    pinyin: 'Pinyin',
+    displayPinyin: 'Display Pinyin',
+    annotations: 'Annotations',
+    noAnnotations: 'No annotations',
+    furigana: 'Furigana',
+    romaji: 'Romaji',
+    closeMenu: 'Close Menu',
+    openMenu: 'Open Menu',
+    targetSuffix: ' — (Target)',
+    selectEpisode: 'Select Episode:',
+    prev: 'Prev',
+    next: 'Next',
+    category: 'Category',
+    chapter: 'Chapter',
+    episode: 'Episode',
+    skipToLine: 'Skip to line:',
+    skip: 'Skip'
+  },
+  zh: {
+    targetLanguage: '目标语言',
+    systemLanguage: '系统语言',
+    learningMode: '学习模式',
+    pinyin: '拼音',
+    displayPinyin: '显示拼音',
+    annotations: '注音标注',
+    noAnnotations: '无标注',
+    furigana: '振假名 (Furigana)',
+    romaji: '罗马字 (Romaji)',
+    closeMenu: '关闭菜单',
+    openMenu: '打开菜单',
+    targetSuffix: ' — (目标语言)',
+    selectEpisode: '选择剧集：',
+    prev: '上一集',
+    next: '下一集',
+    category: '类别',
+    chapter: '章节',
+    episode: '剧集',
+    skipToLine: '跳转至行：',
+    skip: '跳转'
+  },
+  ja: {
+    targetLanguage: '学習言語',
+    systemLanguage: 'システム言語',
+    learningMode: '学習モード',
+    pinyin: 'ピンイン',
+    displayPinyin: 'ピンイン表示',
+    annotations: 'ルビ注釈',
+    noAnnotations: '注釈なし',
+    furigana: 'ふりがな',
+    romaji: 'ローマ字',
+    closeMenu: 'メニューを閉じる',
+    openMenu: 'メニューを開く',
+    targetSuffix: ' — (学習言語)',
+    selectEpisode: 'エピソードを選択:',
+    prev: '前へ',
+    next: '次へ',
+    category: 'カテゴリ',
+    chapter: 'チャプター',
+    episode: 'エピソード',
+    skipToLine: '指定行へ移動:',
+    skip: '移動'
+  },
+  ko: {
+    targetLanguage: '학습 언어',
+    systemLanguage: '시스템 언어',
+    learningMode: '학습 모드',
+    pinyin: '병음',
+    displayPinyin: '병음 표시',
+    annotations: '주석 표시',
+    noAnnotations: '주석 없음',
+    furigana: '후리가나',
+    romaji: '로마자',
+    closeMenu: '메뉴 닫기',
+    openMenu: '메뉴 열기',
+    targetSuffix: ' — (학습 언어)',
+    selectEpisode: '에피소드 선택:',
+    prev: '이전',
+    next: '다음',
+    category: '카테고리',
+    chapter: '챕터',
+    episode: '에피소드',
+    skipToLine: '지정한 줄로 이동:',
+    skip: '이동'
+  }
+};
+
+
+
 export const SAMPLE_LINES: ScriptLine[] = [
   {
     id: 'line-1',

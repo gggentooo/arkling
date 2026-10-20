@@ -1,8 +1,12 @@
 <script lang="ts">
-  import { LANGUAGES, LEARNING_MODES } from '../lib/constants';
+  import { LANGUAGES, LEARNING_MODES, UI_TRANSLATIONS } from '../lib/constants';
   import { learningState } from '../lib/state/learningState.svelte';
   import { storySelectorState } from '../lib/state/storySelectorState.svelte';
   import type { JapaneseAnnotationMode, LanguageCode, LearningMode } from '../types';
+
+  const t = $derived(
+    UI_TRANSLATIONS[learningState.systemLanguage] || UI_TRANSLATIONS['en']
+  );
 
   function handleTargetLanguageChange(event: Event) {
     const select = event.target as HTMLSelectElement;
@@ -13,7 +17,7 @@
     );
   }
 
-function handleSystemLanguageChange(event: Event) {
+  function handleSystemLanguageChange(event: Event) {
     const select = event.target as HTMLSelectElement;
     const newSystemLang = select.value as LanguageCode;
     learningState.setSystemLanguage(newSystemLang);
@@ -35,17 +39,18 @@ function handleSystemLanguageChange(event: Event) {
     learningState.setJapaneseAnnotationMode(select.value as JapaneseAnnotationMode);
   }
 
-  function sectionOpenClose(button) {
-  const parent = button.parentElement;
-  const isFolded = button.textContent === 'Close Menu';
-  button.textContent = isFolded ? 'Open Menu' : 'Close Menu';
-  
-  Array.from(parent.children).forEach(child => {
-    if (child !== button) {
-      child.classList.toggle('hide');
-    }
-  });
-}
+  function sectionOpenClose(button: HTMLButtonElement) {
+    const parent = button.parentElement;
+    if (!parent) return;
+    const isFolded = button.textContent === t.closeMenu;
+    button.textContent = isFolded ? t.openMenu : t.closeMenu;
+
+    Array.from(parent.children).forEach((child) => {
+      if (child !== button) {
+        child.classList.toggle('hide');
+      }
+    });
+  }
 </script>
 
 <header class="top-bar">
@@ -60,18 +65,21 @@ function handleSystemLanguageChange(event: Event) {
 
     <!-- Controls Container -->
     <div class="controls-group">
-<button class="hide" id="button_menu_toggle" onclick={(e) => sectionOpenClose(e.currentTarget)}>Close Menu</button>
+      <button class="hide" id="button_menu_toggle" onclick={(e) => sectionOpenClose(e.currentTarget)}>
+        {t.closeMenu}
+      </button>
+
       <!-- 1. Target Language Dropdown -->
       <div class="control-item">
         <label for="target-language-select" class="control-label">
-          Target Language
+          {t.targetLanguage}
         </label>
         <div class="select-wrapper">
           <select
             id="target-language-select"
             value={learningState.targetLanguage}
             onchange={handleTargetLanguageChange}
-            aria-label="Target Language (to learn)"
+            aria-label={t.targetLanguage}
           >
             {#each LANGUAGES as lang}
               <option value={lang.code}>
@@ -86,14 +94,14 @@ function handleSystemLanguageChange(event: Event) {
       <!-- 2. System Language Dropdown -->
       <div class="control-item">
         <label for="system-language-select" class="control-label">
-          System Language
+          {t.systemLanguage}
         </label>
         <div class="select-wrapper">
           <select
             id="system-language-select"
             value={learningState.systemLanguage}
             onchange={handleSystemLanguageChange}
-            aria-label="System Language (for translations)"
+            aria-label={t.systemLanguage}
           >
             {#each LANGUAGES as lang}
               <option
@@ -102,7 +110,7 @@ function handleSystemLanguageChange(event: Event) {
                 class:disabled-option={lang.code === learningState.targetLanguage}
               >
                 {lang.label} ({lang.nativeLabel})
-                {lang.code === learningState.targetLanguage ? ' — (Target)' : ''}
+                {lang.code === learningState.targetLanguage ? t.targetSuffix : ''}
               </option>
             {/each}
           </select>
@@ -113,14 +121,14 @@ function handleSystemLanguageChange(event: Event) {
       <!-- 3. Learning Mode Dropdown -->
       <div class="control-item">
         <label for="learning-mode-select" class="control-label">
-          Learning Mode
+          {t.learningMode}
         </label>
         <div class="select-wrapper">
           <select
             id="learning-mode-select"
             value={learningState.learningMode}
             onchange={handleLearningModeChange}
-            aria-label="Learning Mode"
+            aria-label={t.learningMode}
           >
             {#each LEARNING_MODES as mode}
               <option value={mode.value}>
@@ -137,7 +145,7 @@ function handleSystemLanguageChange(event: Event) {
         <!-- Mandarin: Display Pinyin Checkbox -->
         <div class="control-item checkbox-control-item">
           <span class="control-label">
-            Pinyin
+            {t.pinyin}
           </span>
           <label class="checkbox-container" for="display-pinyin-checkbox">
             <input
@@ -160,14 +168,14 @@ function handleSystemLanguageChange(event: Event) {
                 </svg>
               {/if}
             </span>
-            <span class="checkbox-title">Display Pinyin</span>
+            <span class="checkbox-title">{t.displayPinyin}</span>
           </label>
         </div>
       {:else if learningState.targetLanguage === 'ja'}
-        <!-- Japanese: Annotations Dropdown (No annotations / Furigana / Romaji) -->
+        <!-- Japanese: Annotations Dropdown -->
         <div class="control-item">
           <label for="japanese-annotations-select" class="control-label">
-            Annotations
+            {t.annotations}
             {#if learningState.isAnnotating}
               <span class="mini-spinner" title="Generating Japanese annotations..."></span>
             {/if}
@@ -178,11 +186,11 @@ function handleSystemLanguageChange(event: Event) {
               value={learningState.japaneseAnnotationMode}
               onchange={handleJapaneseAnnotationChange}
               disabled={learningState.isAnnotating}
-              aria-label="Annotations"
+              aria-label={t.annotations}
             >
-              <option value="none">No annotations</option>
-              <option value="furigana">Furigana</option>
-              <option value="romaji">Romaji</option>
+              <option value="none">{t.noAnnotations}</option>
+              <option value="furigana">{t.furigana}</option>
+              <option value="romaji">{t.romaji}</option>
             </select>
             <span class="dropdown-chevron" aria-hidden="true">▾</span>
           </div>
@@ -191,6 +199,7 @@ function handleSystemLanguageChange(event: Event) {
     </div>
   </div>
 </header>
+
 
 <style>
   .top-bar {
