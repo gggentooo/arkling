@@ -95,8 +95,12 @@
     font-family: inherit;
     font-size: inherit;
     color: inherit;
-    cursor: pointer;
-    line-height: inherit;
+    line-height: inherit;    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    
+    cursor: text;
   }
 
   .interactive:hover {
