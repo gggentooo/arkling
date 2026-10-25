@@ -6,14 +6,69 @@
   import type { StoryCategory } from '../types';
 
   let skipLineInput = $state(1);
+  let isRestoringSelection = $state(true);
 
   const t = $derived(
     UI_TRANSLATIONS[learningState.systemLanguage] || UI_TRANSLATIONS['en']
   );
 
-  onMount(() => {
-    storySelectorState.init(learningState.systemLanguage, learningState.targetLanguage);
+  onMount(async () => {
+    await storySelectorState.loadStoryTable(learningState.systemLanguage);
+
+    const params = new URLSearchParams(window.location.search);
+    const categoryIndex = parseQueryIndex(params.get('cat'));
+    const category = categoryIndex === null ? undefined : STORY_CATEGORIES[categoryIndex];
+    if (category && storySelectorState.chaptersByCategory[category.value].length > 0) {
+      storySelectorState.selectedCategory = category.value;
+    }
+
+    const chapters = storySelectorState.chapters;
+    const chapterIndex = parseQueryIndex(params.get('chap'));
+    const chapter = chapters[chapterIndex ?? 0] || chapters[0];
+    if (chapter) {
+      storySelectorState.selectedChapterId = chapter.id;
+    }
+
+    const episodes = storySelectorState.episodes;
+    const episodeIndex = parseQueryIndex(params.get('ep'));
+    const episode = episodes[episodeIndex ?? 0] || episodes[0];
+    if (episode) {
+      storySelectorState.selectedEpisodeId = episode.storyId;
+    }
+
+    await storySelectorState.loadCurrentEpisode(
+      learningState.targetLanguage,
+      learningState.systemLanguage
+    );
+    isRestoringSelection = false;
   });
+
+  $effect(() => {
+    if (isRestoringSelection) return;
+
+    const categoryIndex = STORY_CATEGORIES.findIndex(
+      (category) => category.value === storySelectorState.selectedCategory
+    );
+    const chapterIndex = storySelectorState.chapters.findIndex(
+      (chapter) => chapter.id === storySelectorState.selectedChapterId
+    );
+    const episodeIndex = storySelectorState.episodes.findIndex(
+      (episode) => episode.storyId === storySelectorState.selectedEpisodeId
+    );
+    if (categoryIndex < 0 || chapterIndex < 0 || episodeIndex < 0) return;
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('cat', String(categoryIndex));
+    url.searchParams.set('chap', String(chapterIndex));
+    url.searchParams.set('ep', String(episodeIndex));
+    window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+  });
+
+  function parseQueryIndex(value: string | null): number | null {
+    if (value === null || !/^\d+$/.test(value)) return null;
+    const index = Number(value);
+    return Number.isSafeInteger(index) ? index : null;
+  }
 
   function handleCategoryChange(e: Event) {
     const target = e.target as HTMLSelectElement;

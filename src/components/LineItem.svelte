@@ -164,6 +164,10 @@
     font-size: 1.08rem;
     letter-spacing: 0.01em;
   }
+  
+  .variant-system>.line-body>.line-text {
+  font-size: 0.9em;
+}
 
   /* Ruby annotations formatting */
   .line-text :global(ruby) {
