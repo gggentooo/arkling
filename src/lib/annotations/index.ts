@@ -1,7 +1,7 @@
-import { html as pinyinHtml } from 'pinyin-pro';
+import {html as pinyinHtml} from 'pinyin-pro';
 import Kuroshiro from 'kuroshiro';
 import KuromojiAnalyzer from 'kuroshiro-analyzer-kuromoji';
-import type { JapaneseAnnotationMode, LanguageCode, ScriptLine } from '../../types';
+import type {JapaneseAnnotationMode, LanguageCode, ScriptLine} from '../../types';
 
 let kuroshiroInstance: Kuroshiro | null = null;
 let kuroshiroInitPromise: Promise<Kuroshiro> | null = null;
@@ -45,7 +45,10 @@ export async function getKuroshiro(): Promise<Kuroshiro> {
       kuroshiroInstance = kuroshiro;
       return kuroshiro;
     }
-  })();
+  })().catch((error) => {
+    kuroshiroInitPromise = null;
+    throw error;
+  });
 
   return await kuroshiroInitPromise;
 }

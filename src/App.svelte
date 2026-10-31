@@ -4,15 +4,6 @@
 </script>
 
 <div class="app-layout">
-  <TopBar />
-  <MainArea />
+  <TopBar/>
+  <MainArea/>
 </div>
-
-<style>
-  .app-layout {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: var(--bg-app);
-  }
-</style>

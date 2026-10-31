@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { LANGUAGES, LEARNING_MODES, UI_TRANSLATIONS } from '../lib/constants';
-  import { learningState } from '../lib/state/learningState.svelte';
-  import { storySelectorState } from '../lib/state/storySelectorState.svelte';
-  import type { JapaneseAnnotationMode, LanguageCode, LearningMode } from '../types';
+  import {tick} from 'svelte';
+  import {LANGUAGES, LEARNING_MODES, UI_TRANSLATIONS} from '../lib/constants';
+  import {learningState} from '../lib/state/learningState.svelte';
+  import {storySelectorState} from '../lib/state/storySelectorState.svelte';
+  import type {JapaneseAnnotationMode, LanguageCode, LearningMode} from '../types';
 
   const t = $derived(
     UI_TRANSLATIONS[learningState.systemLanguage] || UI_TRANSLATIONS['en']
@@ -29,14 +30,40 @@
     learningState.setLearningMode(select.value as LearningMode);
   }
 
-  function handlePinyinToggle(event: Event) {
-    const checkbox = event.target as HTMLInputElement;
-    learningState.setDisplayPinyin(checkbox.checked);
+  async function preserveReadingPosition(update: () => void | Promise<void>) {
+    const lineMarkers = Array.from(document.querySelectorAll<HTMLElement>('.index-num'));
+    if (lineMarkers.length === 0) {
+      await update();
+      await tick();
+      return;
+    }
+
+    const viewportTop = document.querySelector('.top-bar')?.getBoundingClientRect().bottom ?? 0;
+    let markerIndex = lineMarkers.findIndex(
+      (marker) => marker.getBoundingClientRect().bottom > viewportTop
+    );
+    if (markerIndex < 0) markerIndex = lineMarkers.length - 1;
+
+    const originalTop = lineMarkers[markerIndex].getBoundingClientRect().top;
+    await update();
+    await tick();
+
+    const updatedMarker = document.querySelectorAll<HTMLElement>('.index-num')[markerIndex];
+    if (!updatedMarker) return;
+
+    window.scrollBy(0, updatedMarker.getBoundingClientRect().top - originalTop);
   }
 
-  function handleJapaneseAnnotationChange(event: Event) {
+  async function handlePinyinToggle(event: Event) {
+    const checkbox = event.target as HTMLInputElement;
+    await preserveReadingPosition(() => learningState.setDisplayPinyin(checkbox.checked));
+  }
+
+  async function handleJapaneseAnnotationChange(event: Event) {
     const select = event.target as HTMLSelectElement;
-    learningState.setJapaneseAnnotationMode(select.value as JapaneseAnnotationMode);
+    await preserveReadingPosition(() =>
+      learningState.setJapaneseAnnotationMode(select.value as JapaneseAnnotationMode)
+    );
   }
 
   function sectionOpenClose(button: HTMLButtonElement) {
@@ -55,7 +82,6 @@
 
 <header class="top-bar">
   <div class="top-bar-inner">
-    <!-- arkling / Title -->
     <div class="arkling">
       <div class="arkling-info">
         <h1 class="arkling-title">ArkLing</h1>
@@ -63,23 +89,21 @@
       </div>
     </div>
 
-    <!-- Controls Container -->
     <div class="controls-group">
       <button class="hide" id="button_menu_toggle" onclick={(e) => sectionOpenClose(e.currentTarget)}>
         {t.closeMenu}
       </button>
 
-      <!-- 1. Target Language Dropdown -->
       <div class="control-item">
         <label for="target-language-select" class="control-label">
           {t.targetLanguage}
         </label>
         <div class="select-wrapper">
           <select
-            id="target-language-select"
-            value={learningState.targetLanguage}
-            onchange={handleTargetLanguageChange}
-            aria-label={t.targetLanguage}
+              id="target-language-select"
+              value={learningState.targetLanguage}
+              onchange={handleTargetLanguageChange}
+              aria-label={t.targetLanguage}
           >
             {#each LANGUAGES as lang}
               <option value={lang.code}>
@@ -91,23 +115,22 @@
         </div>
       </div>
 
-      <!-- 2. System Language Dropdown -->
       <div class="control-item">
         <label for="system-language-select" class="control-label">
           {t.systemLanguage}
         </label>
         <div class="select-wrapper">
           <select
-            id="system-language-select"
-            value={learningState.systemLanguage}
-            onchange={handleSystemLanguageChange}
-            aria-label={t.systemLanguage}
+              id="system-language-select"
+              value={learningState.systemLanguage}
+              onchange={handleSystemLanguageChange}
+              aria-label={t.systemLanguage}
           >
             {#each LANGUAGES as lang}
               <option
-                value={lang.code}
-                disabled={lang.code === learningState.targetLanguage}
-                class:disabled-option={lang.code === learningState.targetLanguage}
+                  value={lang.code}
+                  disabled={lang.code === learningState.targetLanguage}
+                  class:disabled-option={lang.code === learningState.targetLanguage}
               >
                 {lang.label} ({lang.nativeLabel})
                 {lang.code === learningState.targetLanguage ? t.targetSuffix : ''}
@@ -118,17 +141,16 @@
         </div>
       </div>
 
-      <!-- 3. Learning Mode Dropdown -->
       <div class="control-item">
         <label for="learning-mode-select" class="control-label">
           {t.learningMode}
         </label>
         <div class="select-wrapper">
           <select
-            id="learning-mode-select"
-            value={learningState.learningMode}
-            onchange={handleLearningModeChange}
-            aria-label={t.learningMode}
+              id="learning-mode-select"
+              value={learningState.learningMode}
+              onchange={handleLearningModeChange}
+              aria-label={t.learningMode}
           >
             {#each LEARNING_MODES as mode}
               <option value={mode.value}>
@@ -140,39 +162,36 @@
         </div>
       </div>
 
-      <!-- 4. Language-specific Annotations Control -->
       {#if learningState.targetLanguage === 'zh'}
-        <!-- Mandarin: Display Pinyin Checkbox -->
         <div class="control-item checkbox-control-item">
-          <span class="control-label">
-            {t.pinyin}
-          </span>
+     <span class="control-label">
+      {t.pinyin}
+     </span>
           <label class="checkbox-container" for="display-pinyin-checkbox">
             <input
-              type="checkbox"
-              id="display-pinyin-checkbox"
-              checked={learningState.displayPinyin}
-              onchange={handlePinyinToggle}
+                type="checkbox"
+                id="display-pinyin-checkbox"
+                checked={learningState.displayPinyin}
+                onchange={handlePinyinToggle}
             />
             <span class="custom-checkbox" aria-hidden="true">
-              {#if learningState.displayPinyin}
-                <svg viewBox="0 0 14 14" class="check-icon">
-                  <path
-                    d="M3 7.5L5.5 10L11 3.5"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              {/if}
-            </span>
+       {#if learningState.displayPinyin}
+        <svg viewBox="0 0 14 14" class="check-icon">
+         <path
+             d="M3 7.5L5.5 10L11 3.5"
+             fill="none"
+             stroke="currentColor"
+             stroke-width="2"
+             stroke-linecap="round"
+             stroke-linejoin="round"
+         />
+        </svg>
+       {/if}
+      </span>
             <span class="checkbox-title">{t.displayPinyin}</span>
           </label>
         </div>
       {:else if learningState.targetLanguage === 'ja'}
-        <!-- Japanese: Annotations Dropdown -->
         <div class="control-item">
           <label for="japanese-annotations-select" class="control-label">
             {t.annotations}
@@ -182,11 +201,11 @@
           </label>
           <div class="select-wrapper">
             <select
-              id="japanese-annotations-select"
-              value={learningState.japaneseAnnotationMode}
-              onchange={handleJapaneseAnnotationChange}
-              disabled={learningState.isAnnotating}
-              aria-label={t.annotations}
+                id="japanese-annotations-select"
+                value={learningState.japaneseAnnotationMode}
+                onchange={handleJapaneseAnnotationChange}
+                disabled={learningState.isAnnotating}
+                aria-label={t.annotations}
             >
               <option value="none">{t.noAnnotations}</option>
               <option value="furigana">{t.furigana}</option>
@@ -199,226 +218,3 @@
     </div>
   </div>
 </header>
-
-
-<style>
-  .top-bar {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background-color: var(--bg-surface);
-    border-bottom: 1px solid var(--border-subtle);
-  }
-
-  .top-bar-inner {
-    max-width: var(--max-content-width);
-    margin: 0 auto;
-    padding: 0.75rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .arkling {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    user-select: none;
-  }
-
-  .arkling-info {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  .arkling-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text-main);
-  }
-
-  .arkling-subtitle {
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    font-weight: 500;
-  }
-
-  .controls-group {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    flex-wrap: wrap;
-  }
-
-  .control-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .control-label {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    color: var(--text-muted);
-  }
-
-  .select-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  select {
-    appearance: none;
-    background-color: var(--bg-surface-subtle);
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--border-radius-sm);
-    padding: 0.45rem 2rem 0.45rem 0.75rem;
-    color: var(--text-main);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition-fast);
-    min-width: 160px;
-    height: 2.5rem;
-  }
-
-  select:hover {
-    border-color: var(--border-strong);
-    background-color: var(--bg-surface-hover);
-  }
-
-  select:focus-visible {
-    outline: none;
-    border-color: var(--border-focus);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
-  }
-
-  .dropdown-chevron {
-    position: absolute;
-    right: 0.65rem;
-    pointer-events: none;
-    color: var(--text-muted);
-    font-size: 0.75rem;
-  }
-
-  option:disabled,
-  .disabled-option {
-    color: var(--text-disabled) !important;
-    background-color: var(--bg-surface-subtle) !important;
-    font-style: italic;
-  }
-
-  /* Mandarin Pinyin Checkbox Styling */
-  .checkbox-control-item {
-    justify-content: flex-end;
-  }
-
-  .checkbox-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    user-select: none;
-    padding: 0.45rem 0.75rem;
-    border-radius: var(--border-radius-sm);
-    background-color: var(--bg-surface-subtle);
-    border: 1px solid var(--border-subtle);
-    transition: all var(--transition-fast);
-    height: 1.5rem;
-  }
-
-  .checkbox-container:hover {
-    border-color: var(--border-strong);
-    background-color: var(--bg-surface-hover);
-  }
-
-  .checkbox-container input[type='checkbox'] {
-    position: absolute;
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .custom-checkbox {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    border: 1.5px solid var(--border-strong);
-    background-color: var(--bg-surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all var(--transition-fast);
-  }
-
-  .checkbox-container input[type='checkbox']:checked + .custom-checkbox {
-    background-color: var(--arkling-primary);
-    border-color: var(--arkling-primary);
-    color: #ffffff;
-  }
-
-  .checkbox-container input[type='checkbox']:focus-visible + .custom-checkbox {
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-  }
-
-  .check-icon {
-    width: 12px;
-    height: 12px;
-  }
-
-  .checkbox-title {
-    font-size: 0.85rem;
-    font-weight: 500;
-    color: var(--text-main);
-  }
-
-  .mini-spinner {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border: 2px solid var(--border-subtle);
-    border-top-color: #f59e0b;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    margin-left: 0.25rem;
-  }
-
-  @keyframes spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-    #button_menu_toggle {display: none;}
-
-  @media (max-width: 768px) {
-.hide {display: none;}
-    #button_menu_toggle {display: flex;}
-
-    .top-bar-inner {
-      padding: 0.75rem 1rem;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0;
-    }
-
-    .controls-group {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-      width: 100%;
-    }
-
-    select {
-      width: 100%;
-    }
-  }
-</style>

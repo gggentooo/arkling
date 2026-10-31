@@ -1,6 +1,6 @@
-import { SAMPLE_LINES } from '../constants';
-import type { JapaneseAnnotationMode, LanguageCode, LearningMode, ScriptLine } from '../../types';
-import { annotateScriptLines } from '../annotations';
+import {SAMPLE_LINES} from '../constants';
+import type {JapaneseAnnotationMode, LanguageCode, LearningMode, ScriptLine} from '../../types';
+import {annotateScriptLines} from '../annotations';
 
 class LearningStateManager {
   targetLanguage = $state<LanguageCode>('zh');
@@ -10,6 +10,7 @@ class LearningStateManager {
   displayPinyin = $state<boolean>(false);
   japaneseAnnotationMode = $state<JapaneseAnnotationMode>('none');
   isAnnotating = $state<boolean>(false);
+  private annotationRequestId = 0;
 
   revealedLineIds = $state<Set<string>>(new Set());
 
@@ -34,7 +35,7 @@ class LearningStateManager {
 
   setSystemLanguage(lang: LanguageCode) {
     if (lang === this.targetLanguage) {
-      return; // Disallow setting system language equal to target language
+      return;
     }
     this.systemLanguage = lang;
   }
@@ -43,21 +44,23 @@ class LearningStateManager {
     this.learningMode = mode;
   }
 
-  setDisplayPinyin(enabled: boolean) {
+  async setDisplayPinyin(enabled: boolean) {
     this.displayPinyin = enabled;
-    this.applyAnnotations();
+    await this.applyAnnotations();
   }
 
-  setJapaneseAnnotationMode(mode: JapaneseAnnotationMode) {
+  async setJapaneseAnnotationMode(mode: JapaneseAnnotationMode) {
     this.japaneseAnnotationMode = mode;
-    this.applyAnnotations();
+    await this.applyAnnotations();
   }
 
   async applyAnnotations() {
+    const requestId = ++this.annotationRequestId;
     const needsMandarin = this.targetLanguage === 'zh' && this.displayPinyin;
     const needsJapanese = this.targetLanguage === 'ja' && this.japaneseAnnotationMode !== 'none';
 
     if (!needsMandarin && !needsJapanese) {
+      this.isAnnotating = false;
       return;
     }
 
@@ -69,11 +72,15 @@ class LearningStateManager {
         this.displayPinyin,
         this.japaneseAnnotationMode
       );
-      this.lines = updatedLines;
+      if (requestId === this.annotationRequestId) {
+        this.lines = updatedLines;
+      }
     } catch (err) {
       console.error('Failed to generate annotations:', err);
     } finally {
-      this.isAnnotating = false;
+      if (requestId === this.annotationRequestId) {
+        this.isAnnotating = false;
+      }
     }
   }
 
